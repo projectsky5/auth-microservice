@@ -1,5 +1,6 @@
 package com.projectsky.auth_microservice.security.jwt;
 
+import com.projectsky.auth_microservice.repository.RevokedTokenRepository;
 import com.projectsky.auth_microservice.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,6 +22,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserService userService;
+    private final RevokedTokenRepository revokedTokenRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
@@ -28,6 +30,9 @@ public class JwtFilter extends OncePerRequestFilter {
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
         String token = getTokenFromRequest(request);
         if(token != null && jwtService.validateJwtToken(token)) {
+            if(revokedTokenRepository.existsByToken(token)) {
+                throw new SecurityException("Token was revoked");
+            }
             setCustomUserDetailsToSecurityContextHolder(token);
         }
         filterChain.doFilter(request, response);

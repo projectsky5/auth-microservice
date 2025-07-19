@@ -50,6 +50,16 @@ public class JwtService {
         return claims.getSubject();
     }
 
+    public Date getExpiration(String token){
+        Claims claims = Jwts.parser()
+                .verifyWith(getSignKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.getExpiration();
+    }
+
     // Валидация JWT токена
     // Если во время получения Payload не будет Exception - JWT валиден, иначе - нет
     public boolean validateJwtToken(String token) {
