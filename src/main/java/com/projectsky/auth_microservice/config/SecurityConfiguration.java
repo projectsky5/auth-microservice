@@ -29,13 +29,14 @@ public class SecurityConfiguration{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                                "/api/v1/auth/register-init",
-                                "/api/v1/auth/register-confirm",
-                                "/api/v1/auth/register-complete",
-                                "/api/v1/auth/refresh",
+                                "/api/v1/register/init",
+                                "/api/v1/register/confirm",
+                                "/api/v1/register/complete",
+                                "/api/v1/token/refresh",
+                                "/api/v1/token/revoke",
                                 "/api/v1/auth/sign-in"
                         ).permitAll()
-                        .requestMatchers("/**").authenticated())
+                        .requestMatchers("/api/v1/test").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

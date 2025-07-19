@@ -2,6 +2,7 @@ package com.projectsky.auth_microservice.service;
 
 import com.projectsky.auth_microservice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,9 +21,9 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByEmail(username)
                 .map(user -> new User(
-                        user.getLogin(),
+                        user.getEmail(),
                         user.getPassword(),
-                        Collections.singleton(user.getRole())
+                        Collections.singleton(new SimpleGrantedAuthority(user.getRole().name()))
                 ))
                 .orElseThrow(() -> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
