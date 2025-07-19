@@ -1,4 +1,8 @@
 spring:
+
+  profiles:
+    active: prod
+
   application:
     name: auth-microservice
 
