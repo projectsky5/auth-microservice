@@ -1,6 +1,6 @@
 package com.projectsky.auth_microservice.security.jwt;
 
-import com.projectsky.auth_microservice.service.UserServiceImpl;
+import com.projectsky.auth_microservice.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserServiceImpl userService;
+    private final UserService userService;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,
