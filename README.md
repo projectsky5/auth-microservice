@@ -43,6 +43,10 @@ localhost:8080/api/v1/register/
 2. **POST** confirm (происходит подтверждение аккаунта, и очистка кода из БД)
 3. **POST** complete (происходит завершение регистрации, шифрование пароля, выдается стартовая роль GUEST, выдаются JWT + RefreshToken)
 
+**Работа с состояниями сущности (Роль)**
+
+localhost:8080/api/v1/admin/
+
 **Работа с токеном:**
 
 localhost:8080/api/v1/token/
@@ -57,17 +61,12 @@ localhost:8080/api/v1/token/
 
 Для проверки функционала необходимо сначала зарегистрироваться и положить токен в заголовок Authorization: Bearer (ваш токен)
 
-1. **GET** localhost:8080/api/v1/test
-
-2. **POST** localhost:8080/api/v1/token/revoke
-
-3. **GET** localhost:8080/api/v1/test
-
 ---
 
 Swagger:
 
-<img width="1460" height="646" alt="image" src="https://github.com/user-attachments/assets/937b9f22-7921-4dc0-9978-684d8f4e8e56" />
+<img width="1116" height="799" alt="image" src="https://github.com/user-attachments/assets/177890e8-bebe-4d03-a9f2-260fff9af8b7" />
+
 
 ***ATTENTION***
 Для того, чтобы увидеть отчет swagger необходимо в spring.profiles.active указать dev
