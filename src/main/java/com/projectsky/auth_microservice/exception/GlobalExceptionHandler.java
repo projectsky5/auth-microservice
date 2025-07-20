@@ -42,6 +42,19 @@ public class GlobalExceptionHandler {
                         .build());
     }
 
+    @ExceptionHandler(InvalidRoleException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidRoleException(InvalidRoleException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                ErrorResponse.builder()
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .message(ex.getMessage())
+                        .timestamp(LocalDateTime.now())
+                        .path(request.getRequestURI())
+                        .subErrors(Collections.emptyList())
+                        .build()
+        );
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(

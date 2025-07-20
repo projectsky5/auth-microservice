@@ -41,14 +41,10 @@ public class SecurityConfiguration{
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/api/v1/register/init",
-                                "/api/v1/register/confirm",
-                                "/api/v1/register/complete",
-                                "/api/v1/token/refresh",
-                                "/api/v1/token/revoke",
-                                "/api/v1/auth/sign-in"
-                        ).permitAll()
+                        .requestMatchers("/api/v1/register/**", "/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/token/**", "/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/guest/**").hasRole("GUEST")
+                        .requestMatchers("/api/v1/premium/**").hasRole("PREMIUM")
                         .requestMatchers("/api/v1/test").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

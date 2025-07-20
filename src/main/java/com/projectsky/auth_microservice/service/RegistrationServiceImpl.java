@@ -12,6 +12,7 @@ import com.projectsky.auth_microservice.util.ConfirmationCodeUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    @Transactional
     public void confirmCode(ConfirmCodeRequest request) {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -54,10 +56,10 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         user.setConfirmed(true);
         user.setConfirmationCode("");
-        userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public JwtAunthenticationDto completeRegistration(RegisterPasswordRequest request) {
         User user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -65,8 +67,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if(!user.isConfirmed()) throw new ConfirmationFailedException("User is not confirmed");
 
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole(Role.GUEST);
-        userRepository.save(user);
+        user.setRole(Role.ADMIN);
 
         return jwtService.generateAuthToken(user.getEmail());
     }

@@ -1,7 +1,7 @@
 package com.projectsky.auth_microservice.security.jwt;
 
 import com.projectsky.auth_microservice.repository.RevokedTokenRepository;
-import com.projectsky.auth_microservice.service.UserService;
+import com.projectsky.auth_microservice.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserService userService;
+    private final CustomUserDetailsService userService;
     private final RevokedTokenRepository revokedTokenRepository;
 
     @Override
