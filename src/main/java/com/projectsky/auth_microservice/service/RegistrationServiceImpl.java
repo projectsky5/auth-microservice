@@ -67,7 +67,7 @@ public class RegistrationServiceImpl implements RegistrationService {
         if(!user.isConfirmed()) throw new ConfirmationFailedException("User is not confirmed");
 
         user.setPassword(passwordEncoder.encode(request.password()));
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.GUEST);
 
         return jwtService.generateAuthToken(user.getEmail());
     }

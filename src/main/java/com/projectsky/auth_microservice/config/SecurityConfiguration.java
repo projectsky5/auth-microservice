@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -42,9 +43,11 @@ public class SecurityConfiguration{
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/register/**", "/api/v1/auth/**").permitAll()
-                        .requestMatchers("/api/v1/token/**", "/api/v1/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/token/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/admin").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/api/v1/admin/user/**").hasAnyRole("ADMIN", "GUEST", "PREMIUM_USER")
                         .requestMatchers("/api/v1/guest/**").hasRole("GUEST")
-                        .requestMatchers("/api/v1/premium/**").hasRole("PREMIUM")
+                        .requestMatchers("/api/v1/premium/**").hasRole("PREMIUM_USER")
                         .requestMatchers("/api/v1/test").authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
